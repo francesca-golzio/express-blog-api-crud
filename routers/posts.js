@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const postController = require('../controllers/postController.js');
 
 /* Posts array */
 const posts = [
@@ -41,41 +42,21 @@ const posts = [
 ];
 
 /* Lista Post (Index) */
-router.get('/', (req, res) => {
-  res.json(posts);
-});
+router.get('/', postController.index);
 
-/* Mostro un post */
-router.get('/:id', (req, res) => {
-  res.json(posts.filter(post => post.id == req.params.id));
-});
+/* Mostro un post (Show) */
+router.get('/:id', postController.show);
 
-/* Creo un nuovo post */
-router.post('/', (req, res) => {
-  res.send(`Nuovo post creato`);
-});
+/* Creo un nuovo post (Store) */
+router.post('/', postController.store);
 
-/* Aggiorno tutto un post */
-router.put('/:id', (req, res) => {
-  res.send(`NEW! Post ${req.params.id} aggiornato`);
-});
+/* Aggiorno tutto un post (Update) */
+router.put('/:id', postController.update);
 
-/* Aggiorno parte di un post */
-/* 🤔 forse non era richiesto */
-router.patch('/:id', (req, res) => {
-  res.send(`Post ${req.params.id} aggiornato (minor updates)`);
-});
+/* Aggiorno parte di un post (Modify) */
+router.patch('/:id', postController.modify);
 
-/* Elimino un post */
-router.delete('/:id', (req, res) => {
-  res.send(
-    // 3)👇 uso index per rimuoverlo  1)👇trovo il post
-    posts.splice(posts.indexOf(posts.filter(post => post.id == req.params.id)), 1)
-    //                   👆 2) ricavo il suo index
-  )
-});
-/* router.delete('/:id', (req, res) => {
-  res.send(`Post ${req.params.id} eliminato`);
-}); */
+/* Elimino un post (Destroy) */
+router.delete('/:id', postController.destroy);
 
 module.exports = router;
