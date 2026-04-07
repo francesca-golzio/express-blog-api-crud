@@ -51,6 +51,7 @@ const destroy = router.delete('/:id', (req, res) => {
   }
 
   archive.splice(archive.indexOf(post), 1);
+  console.log(archive)
 
   res.sendStatus(204)
 });
