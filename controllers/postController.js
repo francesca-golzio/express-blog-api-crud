@@ -1,3 +1,5 @@
+const express = require('express');
+const router = express.Router();
 
 /* Posts array */
 const posts = [
@@ -45,7 +47,17 @@ const index = router.get('/', (req, res) => {
 
 /* Show */
 const show = router.get('/:id', (req, res) => {
-  res.json(posts.filter(post => post.id == req.params.id));
+  const id = parseInt(req.params.id);
+  const post = posts.find(post => post.id === id);
+
+  if (!post) {
+    return res.status(404).json({
+      error: 'Not found',
+      message: 'Post non trovato'
+    })
+  }
+
+  res.json(post);
 });
 
 /* Store */
@@ -65,9 +77,26 @@ const modify = router.patch('/:id', (req, res) => {
 
 /* Destroy */
 const destroy = router.delete('/:id', (req, res) => {
-  res.send(
-    // 3)👇 uso index per rimuoverlo  1)👇trovo il post
-    posts.splice(posts.indexOf(posts.filter(post => post.id == req.params.id)), 1)
-    //                   👆 2) ricavo il suo index
-  )
+  const id = parseInt(req.params.id);
+  const post = posts.find(post => post.id == id);
+
+  if (!post) {
+    res.status(404).json({
+      error: 'Not found',
+      message: 'Post non trovato'
+    })
+  }
+
+  posts.splice(posts.indexOf(post), 1);
+
+  res.sendStatus(204)
 });
+
+module.exports = {
+  index,
+  show,
+  store,
+  update,
+  modify,
+  destroy
+}
