@@ -5,26 +5,20 @@ const archive = require('../data/archive')
 /* Index */
 const index = router.get('/', (req, res) => {
   const requestedTag = req.query?.tag;
-  //console.log(requestedTag);
-  const filteredPosts = archive.filter((post) => post.tags.includes(requestedTag));
 
-  /* SE tag non c'è (undefined) >>> res.json(archive); */
   if (requestedTag == undefined) {
-    //console.log('Nessun filtro di ricerca applicato');
     return res.json(archive);
     
-    /* SE INVECE tag c'è ma NON corrisponde ad alcun post >>> res.json('0 risultati'); */
-  } else if (filteredPosts.length === 0) {
-    //console.log('0 risultati');
-    return res.json('0 risultati')
-    
-      /* SE INVECE tag c'è >>> res.json(filteredPosts); */
   } else {
-    return res.json(filteredPosts);
+    const filteredPosts = archive.filter((post) => post.tags.includes(requestedTag));
+
+    if (filteredPosts.length === 0) {
+      return res.json('0 risultati')
+
+    } else {
+      return res.json(filteredPosts);
+    }
   }
-
-
-
 });
 
 /* Show */
