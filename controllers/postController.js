@@ -6,14 +6,8 @@ const archive = require('../data/archive')
 /* Index */
 const index = router.get('/', (req, res) => {
   const requestedTag = 'lorem';
-  const filteredPosts = [];
-
-  archive.map((post) => {
-    if (post.tags.includes(requestedTag)) {
-      //console.log('ok');  
-      filteredPosts.push(post);
-    }
-  })
+ 
+  const filteredPosts = archive.filter((post) => post.tags.includes(requestedTag));
 
   res.json(filteredPosts);
 });
