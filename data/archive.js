@@ -37,4 +37,4 @@ const archive = [
   }
 ];
 
-exports.module = (archive)
+module.exports = archive
