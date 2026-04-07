@@ -5,7 +5,17 @@ const archive = require('../data/archive')
 
 /* Index */
 const index = router.get('/', (req, res) => {
-  res.json(archive);
+  const requestedTag = 'lorem';
+  const filteredPosts = [];
+
+  archive.map((post) => {
+    if (post.tags.includes(requestedTag)) {
+      //console.log('ok');  
+      filteredPosts.push(post);
+    }
+  })
+
+  res.json(filteredPosts);
 });
 
 /* Show */
