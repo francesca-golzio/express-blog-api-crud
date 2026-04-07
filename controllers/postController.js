@@ -5,13 +5,13 @@ const archive = require('../data/archive')
 
 /* Index */
 const index = router.get('/', (req, res) => {
-  res.json(posts);
+  res.json(archive);
 });
 
 /* Show */
 const show = router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const post = posts.find(post => post.id === id);
+  const post = archive.find(post => post.id === id);
 
   if (!post) {
     return res.status(404).json({
@@ -41,7 +41,7 @@ const modify = router.patch('/:id', (req, res) => {
 /* Destroy */
 const destroy = router.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const post = posts.find(post => post.id == id);
+  const post = archive.find(post => post.id == id);
 
   if (!post) {
     res.status(404).json({
@@ -50,7 +50,7 @@ const destroy = router.delete('/:id', (req, res) => {
     })
   }
 
-  posts.splice(posts.indexOf(post), 1);
+  archive.splice(archive.indexOf(post), 1);
 
   res.sendStatus(204)
 });
