@@ -63,6 +63,8 @@ const show = router.get('/:id', (req, res) => {
 
 /* Store */
 const store = router.post('/', (req, res) => {
+  console.log(req.body);
+  
   res.send(`Nuovo post creato`);
 });
 
