@@ -70,7 +70,7 @@ const store = router.post('/', (req, res) => {
   /* destrutturo i dati */
   const { title, content, image, tags } = req.body;
 
-  /* verifica dei dati ...*/
+  /* validazione dei dati ...*/
 
   /* unicità del titolo */
   if (archive.find(post => post.title === title)) {
@@ -128,10 +128,33 @@ const update = router.put('/:id', (req, res) => {
   /* cerco il post dall'archive... */
   const reqPost = archive.find(post => post.id === postId);
 
-  /* SE esiste un post con quell'id */
+  /* destrutturo i dati della req */
+  const { title, content, image, tags } = req.body;
+
+  /* - SE esiste un post con quell'id */
   if (reqPost) {
-    /* destrutturo i dati della req */
-    const { title, content, image, tags } = req.body;
+
+    /* validazione dei dati ...*/
+    /* unicità del titolo */
+    if (reqPost.title !== title) {
+      if (archive.find(post => post.title === title)) {
+        return (
+          res.status(400).json({
+            error: 'Bad request',
+            message: 'Esiste già un altro post con questo titolo'
+          })
+        )
+      } 
+      /* lunghezza del titolo */
+      if (title.length === 0 || title.length > 50) {
+        return (
+          res.status(400).json({
+            error: 'Bad request',
+            message: 'Il titolo deve essere compreso tra 1 e 50 caratteri'
+          })
+        )
+      }
+    }
 
     /* aggiorno il post */
     reqPost.title = title;
@@ -140,14 +163,16 @@ const update = router.put('/:id', (req, res) => {
     reqPost.tags = tags;
 
     /* restituisco il post modificato */
-    res.json(reqPost);
+    return res.json(reqPost);
 
-    /* SE non esiste restituisco errore */
   } else {
-    res.status(404).json({
-      error: 'Not found',
-      message: 'Post non trovato'
-    })
+    /* - SE non esiste restituisco errore */
+    return (
+      res.status(404).json({
+        error: 'Not found',
+        message: 'Post non trovato'
+      })
+    )
   }
 
 });
