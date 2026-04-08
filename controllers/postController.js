@@ -19,7 +19,7 @@ const index = router.get('/', (req, res) => {
     //console.log(requestedTagsArray);
 
     archive.filter((post) => {
-      
+
       //3️⃣ cerco i post che contengono almeno uno dei tag
       requestedTagsArray.map((tag) => {
 
@@ -63,9 +63,27 @@ const show = router.get('/:id', (req, res) => {
 
 /* Store */
 const store = router.post('/', (req, res) => {
-  console.log(req.body);
-  
-  res.send(`Nuovo post creato`);
+
+  /* genero id */
+  const newId = Date.now();
+
+  /* destrutturo i dati */
+  const { title, content, image, tags } = req.body;
+
+  /* definisco il nuovo post */
+  const newPost = {
+    id: newId,
+    title,
+    content,
+    image,
+    tags
+  }
+
+  /* 'salvo' il nuovo post nell'archivio */
+  archive.push(newPost);
+
+  /* invio la risposta */
+  res.status(201).json(newPost);
 });
 
 /* Update */
