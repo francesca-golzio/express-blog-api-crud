@@ -88,7 +88,28 @@ const store = router.post('/', (req, res) => {
 
 /* Update */
 const update = router.put('/:id', (req, res) => {
-  res.send(`NEW! Post ${req.params.id} aggiornato`);
+
+  /* recupero l'id + parsing numero*/
+  const postId = parseInt(req.params.id);
+
+  /* recupero il post dall'archive */
+  /* controllo che esista un post con quell'id */
+  let reqPost = archive.find(post => { post.id === postId });
+  
+  /* destrutturo i parametri della req */
+  const { title, content, image, tags } = req.body;
+
+  /* aggiorno il post */
+  reqPost = {
+    title,
+    content,
+    image,
+    tags
+  };
+
+  /* restituisco il post modificato */
+res.json(reqPost);
+
 });
 
 /* Modify */
