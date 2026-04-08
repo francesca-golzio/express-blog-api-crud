@@ -92,23 +92,30 @@ const update = router.put('/:id', (req, res) => {
   /* recupero l'id + parsing numero*/
   const postId = parseInt(req.params.id);
 
-  /* recupero il post dall'archive */
-  /* controllo che esista un post con quell'id */
-  let reqPost = archive.find(post => { post.id === postId });
-  
-  /* destrutturo i parametri della req */
-  const { title, content, image, tags } = req.body;
+  /* cerco il post dall'archive... */
+  const reqPost = archive.find(post => post.id === postId);
 
-  /* aggiorno il post */
-  reqPost = {
-    title,
-    content,
-    image,
-    tags
-  };
+  /* SE esiste un post con quell'id */
+  if (reqPost) {
+    /* destrutturo i dati della req */
+    const { title, content, image, tags } = req.body;
 
-  /* restituisco il post modificato */
-res.json(reqPost);
+    /* aggiorno il post */
+    reqPost.title = title;
+    reqPost.content = content;
+    reqPost.image = image;
+    reqPost.tags = tags;
+
+    /* restituisco il post modificato */
+    res.json(reqPost);
+
+    /* SE non esiste restituisco errore */
+  } else {
+    res.status(404).json({
+      error: 'Not found',
+      message: 'Post non trovato'
+    })
+  }
 
 });
 
