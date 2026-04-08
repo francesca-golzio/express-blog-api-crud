@@ -70,20 +70,43 @@ const store = router.post('/', (req, res) => {
   /* destrutturo i dati */
   const { title, content, image, tags } = req.body;
 
-  /* definisco il nuovo post */
-  const newPost = {
-    id: newId,
-    title,
-    content,
-    image,
-    tags
+  /* verifica dei dati ...*/
+
+  /* unicità del titolo */
+  if (archive.find(post => post.title === title)) {    
+    return(
+      res.status(400).json({
+        error: 'Bad request',
+        message: 'Esiste già un post con questo titolo'
+      })
+    )    
+    
+    /* lunghezza del titolo */
+  } else if (title.length === 0 || title.length > 50) {
+    console.log(title.length);
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: 'Il titolo deve essere compreso tra 1 e 50 caratteri'
+      })
+    )
+
+  } else {
+    /* definisco il nuovo post */
+    const newPost = {
+      id: newId,
+      title,
+      content,
+      image,
+      tags
+    }
+
+    /* 'salvo' il nuovo post nell'archivio */
+    archive.push(newPost);
+
+    /* invio la risposta */
+    res.status(201).json(newPost);
   }
-
-  /* 'salvo' il nuovo post nell'archivio */
-  archive.push(newPost);
-
-  /* invio la risposta */
-  res.status(201).json(newPost);
 });
 
 /* Update */
