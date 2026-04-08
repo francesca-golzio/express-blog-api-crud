@@ -144,7 +144,7 @@ const update = router.put('/:id', (req, res) => {
             message: 'Esiste già un altro post con questo titolo'
           })
         )
-      } 
+      }
       /* lunghezza del titolo */
       if (title.length === 0 || title.length > 50) {
         return (
@@ -155,8 +155,17 @@ const update = router.put('/:id', (req, res) => {
         )
       }
     }
+    /* lunghezza del post */
+    if (content.length === 0 || content.length > 5000) {
+      return (
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Il post deve essere compreso tra 1 e 5000 caratteri'
+        })
+      )
+    }
 
-    /* aggiorno il post */
+    /* aggiorno il post */ //⚠️aggiungi controllo
     reqPost.title = title;
     reqPost.content = content;
     reqPost.image = image;
