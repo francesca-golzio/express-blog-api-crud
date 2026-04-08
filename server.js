@@ -7,6 +7,9 @@ const postsRouter = require('./routers/posts');
 /* Rendo accessibili gli assets static */
 app.use(express.static('public'));
 
+/* Attivo il body parser indicando quale formato voglio usare */
+app.use(express.json());
+
 /* Server Index */
 app.get('/', (req, res) => {
   res.send('Sono il server del blog');
