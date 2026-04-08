@@ -73,21 +73,31 @@ const store = router.post('/', (req, res) => {
   /* verifica dei dati ...*/
 
   /* unicità del titolo */
-  if (archive.find(post => post.title === title)) {    
-    return(
+  if (archive.find(post => post.title === title)) {
+    return (
       res.status(400).json({
         error: 'Bad request',
         message: 'Esiste già un post con questo titolo'
       })
-    )    
-    
+    )
+
     /* lunghezza del titolo */
   } else if (title.length === 0 || title.length > 50) {
-    console.log(title.length);
+    //console.log(title.length);
     return (
       res.status(400).json({
         error: 'Bad request',
         message: 'Il titolo deve essere compreso tra 1 e 50 caratteri'
+      })
+    )
+
+    /* lunghezza del post */
+  } else if (content.length === 0 || content.length > 5000) {
+    console.log(content.length);
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: 'Il post deve essere compreso tra 1 e 5000 caratteri'
       })
     )
 
