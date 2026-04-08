@@ -131,6 +131,40 @@ const update = router.put('/:id', (req, res) => {
   /* destrutturo i dati della req */
   const { title, content, image, tags } = req.body;
 
+  /* controllo che i parametri esistano nella req */
+  if (!title) {
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: '* title mancante'
+      })
+    )
+  };
+  if (!content) {
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: '* content (parametro mancante)'
+      })
+    )
+  };
+  if (!image) {
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: '* image (parametro mancante)'
+      })
+    )
+  };
+  if (!tags) {
+    return (
+      res.status(400).json({
+        error: 'Bad request',
+        message: '* tags (parametro mancante)'
+      })
+    )
+  };
+
   /* - SE esiste un post con quell'id */
   if (reqPost) {
 
@@ -165,11 +199,11 @@ const update = router.put('/:id', (req, res) => {
       )
     }
 
-    /* aggiorno il post */ //⚠️aggiungi controllo
-    reqPost.title = title;
-    reqPost.content = content;
-    reqPost.image = image;
-    reqPost.tags = tags;
+    /* aggiorno il post */
+    if (title) { reqPost.title = title };
+    if (content) { reqPost.content = content };
+    if (image) { reqPost.image = image };
+    if (tags) { reqPost.tags = tags };
 
     /* restituisco il post modificato */
     return res.json(reqPost);
