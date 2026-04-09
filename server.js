@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const postsRouter = require('./routers/posts');
+const notFound = require('./middlewares/notFound');
 
 
 /* Rendo accessibili gli assets static */
@@ -21,3 +22,6 @@ app.use('/posts', postsRouter);
 app.listen(3000, () => {
   console.log('Il Server gira qui http://localhost:3000');
 });
+
+/* Registro le middlewares */
+app.use(notFound)
