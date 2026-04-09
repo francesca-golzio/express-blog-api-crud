@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const postsRouter = require('./routers/posts');
 const notFound = require('./middlewares/notFound');
-
+const errorHandler = require('./middlewares/errorsHandler');
 
 /* Rendo accessibili gli assets static */
 app.use(express.static('public'));
@@ -13,6 +13,7 @@ app.use(express.json());
 
 /* Server Index */
 app.get('/', (req, res) => {
+  
   res.send('Sono il server del blog');
 });
 
@@ -25,3 +26,4 @@ app.listen(3000, () => {
 
 /* Registro le middlewares */
 app.use(notFound)
+app.use(errorHandler);
